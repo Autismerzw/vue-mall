@@ -32,14 +32,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ],
     },
     // 利用devsever的before模拟后端api
-    before (app) {
-      app.get('/api/goods', function (req, res) {
-        res.json({
-          error: 0,
-          data: goods
-        })
-      })
-    },
+    // before (app) {
+    //   app.get('/api/goods', function (req, res) {
+    //     res.json({
+    //       error: 0,
+    //       data: goods
+    //     })
+    //   })
+    // },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,

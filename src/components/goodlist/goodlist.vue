@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sort v-on:select-price='getPrShow'></sort>
+    <sort v-on:select-price='getPrShow' v-on:sort-price='getPageSort'></sort>
     <div class="goodlist w">
      <transition name="pr">
       <aside :class="{'prshow': prShow}">
@@ -8,7 +8,7 @@
           PRICE
         </h3>
         <ul>
-          <li class="p-item" :class="{'active': cur === 'All'}" @click="cur = 'All'">All</li>
+          <li class="p-item" :class="{'active': cur === 'All'}" @click="setPriceAll">All</li>
           <li class="p-item" v-for="(i, index) in priceRange" :key='index' @click="setPriceRange(index)" :class="{'active':cur === index}">
             <span>{{i.priceL}} - {{i.priceH}}</span>
           </li>
@@ -18,16 +18,19 @@
       <div class="goods-item">
         <ul>
           <li class="item" v-for="(item, index) in goods" :key='index'>
-            <img alt="" v-lazy="'/static/'+item.prodcutImg">
+            <img alt="" v-lazy="'/static/'+item.productImage">
             <div class="main">
               <h1 class="name">{{item.productName}}</h1>
-              <p class="price">￥{{item.prodcutPrice}}</p>
+              <p class="price">￥{{item.salePrice}}</p>
             </div>
             <span class="btn-add">
               加入购物车
             </span>
           </li>
         </ul>
+        <div class="loadMore" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="60">
+          <img v-show="loadFlog" src="../../assets/loading-cylon-red.svg">
+        </div>
       </div>
     </div>
     <div class="shadow" @click="getPrHide" v-show="prHide"></div>
@@ -36,14 +39,12 @@
 
 <script>
 import sort from '../sort/sort'
+import axios from 'axios'
+
 export default {
-  props: {
-    goods: {
-      type: Array
-    }
-  },
   data () {
     return {
+      goods: [],
       priceRange: [
         {
           priceL: 0.00,
@@ -62,17 +63,74 @@ export default {
           priceH: 2000.00
         }
       ],
+      priceLevel: [],
       cur: 'All',
       prShow: false,
-      prHide: false
+      prHide: false,
+      page: 1,
+      pageSize: 4,
+      sortFlag: true,
+      priceL: 0,
+      busy: true,
+      loadFlog: true
       // screenWidth: document.documentElement.clientWidth
     }
   },
+  mounted () {
+    this.getGoodList()
+  },
   methods: {
+    getGoodList (flag) {
+      let param = {
+        page: this.page,
+        pageSize: this.pageSize,
+        sort: this.sortFlag ? 1 : -1,
+        priceL: this.priceLevel[0],
+        priceH: this.priceLevel[1]
+      }
+      this.loadFlog = true
+      axios.get('/api/goods', {
+        params: param
+      }).then((result) => {
+        this.loadFlog = false
+        var res = result.data
+        if (res.stetus === '0') {
+          if (flag) {
+            this.goods = this.goods.concat(res.result.list)
+            if (res.result.count === 0) {
+              this.busy = true
+            } else {
+              this.busy = false
+            }
+          } else {
+            this.goods = res.result.list
+            this.busy = false
+          }
+        } else {
+          this.goods = []
+        }
+      })
+    },
+    getPageSort () {
+      this.sortFlag = !this.sortFlag
+      this.page = 1
+      this.getGoodList()
+    },
     setPriceRange (index) {
       this.cur = index
+      this.priceLevel[0] = this.priceRange[index].priceL
+      this.priceLevel[1] = this.priceRange[index].priceH
+      this.page = 1
+      this.getGoodList()
       this.prHide = !this.prHide
       this.prShow = !this.prShow
+    },
+    setPriceAll () {
+      this.cur = 'All'
+      this.priceLevel[0] = 'all'
+      this.getGoodList()
+      this.sortFlag = false
+      this.getPageSort()
     },
     getPrShow (target) {
       this.prShow = !this.prShow
@@ -81,6 +139,13 @@ export default {
     getPrHide () {
       this.prHide = !this.prHide
       this.prShow = !this.prShow
+    },
+    loadMore () {
+      this.busy = true
+      setTimeout(() => {
+        this.page++
+        this.getGoodList(true)
+      }, 1000)
     }
   },
   components: {
@@ -166,6 +231,19 @@ export default {
         border:2px solid #ee7a23;        
         position: relative;
         top: -6px;
+      }
+    }
+    .loadMore {
+      display: inline-block;
+      width: 80%;
+      text-align: center;
+      padding: 20px;
+      color: #d1434a;
+      font-size: 16px;
+      img{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
       }
     }
   }

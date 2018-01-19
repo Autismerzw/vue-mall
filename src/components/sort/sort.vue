@@ -4,7 +4,7 @@
       <div class="sort-p">
         <span class="title">Sort By:</span>
         <span class="default active">Dafult</span>
-        <span class="price">Price</span>
+        <span class="price" @click="sortPrice">Price</span>
       </div>
       <div class="sort-pr">
         <span class="select-price" @click="selectPrice">
@@ -20,6 +20,10 @@
     methods: {
       selectPrice () {
         this.$emit('select-price', event.target)
+        console.log(1)
+      },
+      sortPrice () {
+        this.$emit('sort-price', event.target)
         console.log(1)
       }
     }
@@ -41,6 +45,7 @@
     }
     span{
       margin-right: 20px;
+      cursor: pointer;
     }
     .sort-pr{
       display: none;
