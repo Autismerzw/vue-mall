@@ -23,7 +23,7 @@
               <h1 class="name">{{item.productName}}</h1>
               <p class="price">￥{{item.salePrice}}</p>
             </div>
-            <span class="btn-add">
+            <span class="btn-add" @click="addCart(item.productId)">
               加入购物车
             </span>
           </li>
@@ -40,6 +40,7 @@
 <script>
 import sort from '../sort/sort'
 import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   data () {
@@ -89,7 +90,7 @@ export default {
         priceH: this.priceLevel[1]
       }
       this.loadFlog = true
-      axios.get('/api/goods', {
+      axios.get('/goods', {
         params: param
       }).then((result) => {
         this.loadFlog = false
@@ -139,6 +140,19 @@ export default {
     getPrHide () {
       this.prHide = !this.prHide
       this.prShow = !this.prShow
+    },
+    addCart (productId) {
+      // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+      axios.post('/goods/addCart', {
+        productId: productId
+      }).then((res) => {
+        res = res.data
+        if (res.status === '0') {
+          alert('成功')
+        } else {
+          alert('msg：' + res.msg)
+        }
+      })
     },
     loadMore () {
       this.busy = true
