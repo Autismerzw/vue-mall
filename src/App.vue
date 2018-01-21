@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <v-header></v-header>
-    <breadCrumb>
-      <span >goods /</span>
-    </breadCrumb>
-    <goodlist></goodlist>
+    <router-view></router-view>
     <v-footer></v-footer>
   </div>
 </template>
@@ -12,15 +9,11 @@
 <script>
 import header from '@/components/header/v-header'
 import footer from '@/components/footer/v-footer'
-import breadCrumb from '@/components/breadCrumb/breadCrumb'
-import goodlist from '@/components/goodlist/goodlist'
 export default {
   name: 'app',
   components: {
     'v-header': header,
-    'v-footer': footer,
-    breadCrumb,
-    goodlist
+    'v-footer': footer
   }
 }
 </script>

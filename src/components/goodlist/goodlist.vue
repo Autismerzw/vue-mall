@@ -1,5 +1,8 @@
 <template>
   <div>
+    <breadCrumb>
+      <span >goods /</span>
+    </breadCrumb>
     <sort v-on:select-price='getPrShow' v-on:sort-price='getPageSort'></sort>
     <div class="goodlist w">
      <transition name="pr">
@@ -34,14 +37,31 @@
       </div>
     </div>
     <div class="shadow" @click="getPrHide" v-show="prHide"></div>
+    <molde :mdshow='mdshow' v-on:mdClose="mdClose">
+        <p slot="message">
+          您还没有登陆，无法添加到购物车中
+        </p>
+        <div slot="btn-group">
+          <span class="btn-close" @click="mdClose">关闭</span>
+        </div>
+    </molde>    
+    <molde :mdshow='mdcartshow' v-on:mdClose="mdClose">
+        <p slot="message">
+          已添加到购物车
+        </p>
+        <div slot="btn-group">
+          <span class="btng btn-close" @click="mdClose">继续购物</span>
+          <router-link to="/cart" class="btng">查看购物车</router-link>
+        </div>
+    </molde>    
   </div>
 </template>
 
 <script>
 import sort from '../sort/sort'
 import axios from 'axios'
-// import axios from 'axios'
-
+import molde from '../molde/molde'
+import breadCrumb from '@/components/breadCrumb/breadCrumb'
 export default {
   data () {
     return {
@@ -69,11 +89,13 @@ export default {
       prShow: false,
       prHide: false,
       page: 1,
-      pageSize: 4,
+      pageSize: 8,
       sortFlag: true,
       priceL: 0,
       busy: true,
-      loadFlog: true
+      loadFlog: true,
+      mdshow: false,
+      mdcartshow: false
       // screenWidth: document.documentElement.clientWidth
     }
   },
@@ -148,11 +170,16 @@ export default {
       }).then((res) => {
         res = res.data
         if (res.status === '0') {
-          alert('成功')
+          this.mdcartshow = true
         } else {
-          alert('msg：' + res.msg)
+          // alert('msg：' + res.msg)
+          this.mdshow = true
         }
       })
+    },
+    mdClose () {
+      this.mdshow = false
+      this.mdcartshow = false
     },
     loadMore () {
       this.busy = true
@@ -163,7 +190,9 @@ export default {
     }
   },
   components: {
-    sort
+    sort,
+    molde,
+    breadCrumb
   }
 }
 </script>
@@ -251,7 +280,7 @@ export default {
       display: inline-block;
       width: 80%;
       text-align: center;
-      padding: 20px;
+      // padding: 20px;
       color: #d1434a;
       font-size: 16px;
       img{
