@@ -42,7 +42,7 @@
           您还没有登陆，无法添加到购物车中
         </p>
         <div slot="btn-group">
-          <span class="btn-close" @click="mdClose">关闭</span>
+          <span class="btn-close btng" @click="mdClose">关闭</span>
         </div>
     </molde>    
     <molde :mdshow='mdcartshow' v-on:mdClose="mdClose">
@@ -145,8 +145,8 @@ export default {
       this.priceLevel[1] = this.priceRange[index].priceH
       this.page = 1
       this.getGoodList()
-      this.prHide = !this.prHide
-      this.prShow = !this.prShow
+      this.prHide = false
+      this.prShow = false
     },
     setPriceAll () {
       this.cur = 'All'

@@ -7,11 +7,17 @@
                     <span @click="log">登录</span>   
                 </div>
                 <div class="log logout" v-if="nickName">
-                    <span>个人中心</span>
+                    <!-- <span>个人中心</span> -->
+                    <span class="icon-user"></span>
                     /<span @click="getLogOut">退  出</span>
+                    <router-link to="/cart">
+                      <span class="icon-cart"></span>
+                    </router-link>
                 </div>
+                
             </div>
-            <div class="model-log" v-show="modelShow">
+            <transition name="log">
+              <div class="model-log" v-show="modelShow">
                 <div class="model-con">
                     <h1 class="title">
                         请登录
@@ -22,6 +28,7 @@
                     <span class="btn-login" @click="getLogin">登录</span>
                 </div>
             </div>
+            </transition>
         </div>
         <div class="shadow" @click="getPrHide" v-show="modelShow"></div>
     </header>
@@ -119,6 +126,9 @@ header {
       padding: 10px;
       cursor: pointer;
     }
+    a{
+      color: #000;
+    }
   }
   .log-content {
     float: right;
@@ -170,5 +180,65 @@ header {
       }
     }
   }
+}
+@media screen and (max-width:760px){
+   .header-content {
+    .model-log {
+      background: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      z-index: 90;
+      transition: all .4s linear;
+      .model-con {
+        padding: 30px;
+        text-align: center;
+        .title {
+          font-size: 18px;
+          text-align: center;
+          line-height: 1.5;
+          color: #ee4555;
+        }
+        .errtip{
+          color: #ee4555;
+          line-height: 1;
+          margin-top: 10px; 
+        }
+        input {
+          width: 80%;
+          margin-left: 20px;
+          height: 35px;
+          padding-left: 10px;
+          border: 1px solid #ccc;
+          outline: none;
+          &:focus {
+            border-color: #ee4555;
+          }
+        }
+
+        .btn-login {
+          display: inline-block;
+          width: 35%;
+          text-align: center;
+          cursor: pointer;
+          color: #d4314d;
+          border: 1px solid #d1434a;
+          line-height: 2;
+        }
+      }
+    }
+    .log-enter, .log-leave-to{
+      transform: translate3d(100%,0,0);
+      opacity: 0;
+    }
+    .log-enter-to{
+      transform: translate3d(0,0,0);
+      opacity: 1;
+    }
+   }
 }
 </style>
