@@ -28,6 +28,7 @@ $red: #ee455e;
   .w{
     max-width: 1200px;
     margin: 0 auto;
+    // overflow: hidden;
   }
 }
 </style>

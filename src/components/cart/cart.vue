@@ -49,7 +49,7 @@
           </div>
           <div class="r-sub">
             <span class="total">￥{{this.totalPrice}}</span>
-            <span class="btn-deal" :class="{'btn-dealTure': this.checkCount}" @click="getorder">
+            <span class="btn-deal" :class="{'btn-dealTure': this.checkCount}" @click="getAddress">
               确认下单
             </span>
           </div>
@@ -175,7 +175,7 @@ export default {
         }
       })
     },
-    getorder () {
+    getAddress () {
       if (this.checkCount > 0) {
         this.$router.push({
           path: '/address'
