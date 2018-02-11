@@ -203,6 +203,7 @@ export default {
       background: #fff;
     }
     .tr-head{
+      padding: 10px 10px;
       background: #000;
       color: #fff;
       div{

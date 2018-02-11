@@ -5,6 +5,7 @@ import cart from '../components/cart/cart'
 import goods from '../components/goodlist/goodlist'
 import addresss from '../components/address/address'
 import orderConfirm from '../components/orderConfirm/orderConfirm'
+import orderSuccess from '../components/orderSuccess/orderSuccess'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -28,7 +29,10 @@ export default new Router({
     {
       path: '/orderConfirm',
       component: orderConfirm
-
+    },
+    {
+      path: '/orderSuccess',
+      component: orderSuccess
     }
   ],
   linkActiveClass: 'active',
