@@ -21,7 +21,8 @@
       <div class="goods-item">
         <ul>
           <li class="item" v-for="(item, index) in goods" :key='index'>
-            <img alt="" v-lazy="'/static/'+item.productImage">
+            <!-- <img alt="" v-lazy="'/static/'+item.productImage"> -->
+            <img alt="" :src="'/static/'+item.productImage">
             <div class="main">
               <h1 class="name">{{item.productName}}</h1>
               <p class="price">￥{{item.salePrice}}</p>
