@@ -22,7 +22,7 @@
         </li>
           <li class="item" v-for="(item, index) in cartList" :key="index" v-if="item.checked === 1">
              <div class="items">
-               <img  v-lazy="'/static/'+item.productImage" width="70" height="70">
+               <img  v-lazy="'static'+item.productImage" width="70" height="70">
                <span class="pro-title">{{item.productName}}</span>
              </div>
             <div class="prices">
