@@ -16,7 +16,7 @@
           <li class="item" v-for="(item, index) in cartList" :key="index">
              <div class="items">
                <span class="icon" :class="[item.checked ? 'icon-checkbox-checked' : 'icon-checkbox-unchecked']" @click="etidCart('checked',item)"></span>
-               <img  v-lazy="'/static/'+item.productImage" width="70" height="70">
+               <img  v-lazy="'//s.bujiangjiu.org/vue-mall/dist/static/'+item.productImage" width="70" height="70">
                <span class="pro-title">{{item.productName}}</span>
              </div>
             <div class="prices">
